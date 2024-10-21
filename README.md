@@ -14,6 +14,7 @@ This project involves designing and implementing a database for a tour company u
 
 ## How to Use
 1. Clone the repository.
-2. Import the SQL scripts into your MySQL server.
-3. Run the provided scripts to create and populate the database.
+2. Import the `TourCompany_Additional.sql` and `TourCompany_Additional.script` scripts into your MySQL server.
+3. Run the scripts to create and populate the database.
 4. Follow the instructions in the README file for further details.
+
