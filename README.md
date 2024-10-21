@@ -1,16 +1,23 @@
 # TourCompany - SQL Project
 
-This project involves designing and implementing a database for a tour company using MySQL. The database is designed to handle various aspects of the company's operations, including customer information, booking details, and tour packages. The aim of this project is to streamline the company's data management and provide efficient data retrieval and reporting capabilities.
+## Overview
+This project involves developing an application for the Tour Company, which provides day tours around Istanbul with guides. The aim is to manage the company's organization effectively.
 
-## Key Features
-- **Customer Management:** Storing and managing customer information.
-- **Booking System:** Handling tour bookings and related details.
-- **Tour Packages:** Managing the details of available tour packages.
-- **Data Analysis:** Providing insightful reports and data analysis for better decision-making.
+## Features
+- **Tour Management:** Define and manage tours, including selecting regions and assigning tour guides.
+- **Sales Management:** Record sales from various channels and manage tour bookings.
+- **Tourist Information:** Capture and store tourist information and generate invoices.
+- **Guide Management:** Add, update, and remove tour guides with details such as name, gender, phone number, and languages spoken.
+
+## Usage Scenarios
+1. **Define Tours:** Select 1 to 3 regions, set tour names (max 150 characters), and calculate tour fees based on selected regions.
+2. **Sales Recording:** Enter tour sales, specify tourist details, set tour dates, and assign tour guides.
+3. **Guide Management:** Add and manage guide details, including languages spoken and areas of knowledge.
+4. **Invoice Generation:** Create invoices for tourists, apply discounts for those over 60, and view detailed invoice information.
 
 ## Technologies Used
-- **SQL:** For database design and implementation.
-- **MySQL:** As the database management system.
+- SQL for database management
+- MySQL for database implementation
 
 ## How to Use
 1. Clone the repository.
