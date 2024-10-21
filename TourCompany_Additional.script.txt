@@ -1,0 +1,370 @@
+USE [master]
+GO
+/****** Object:  Database [TourCompany]    Script Date: 2.08.2023 20:42:01 ******/
+CREATE DATABASE [TourCompany]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'TourCompany', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\TourCompany.mdf' , SIZE = 10240KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'TourCompany_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\TourCompany_log.ldf' , SIZE = 73728KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [TourCompany] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [TourCompany].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [TourCompany] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [TourCompany] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [TourCompany] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [TourCompany] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [TourCompany] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [TourCompany] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [TourCompany] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [TourCompany] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [TourCompany] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [TourCompany] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [TourCompany] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [TourCompany] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [TourCompany] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [TourCompany] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [TourCompany] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [TourCompany] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [TourCompany] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [TourCompany] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [TourCompany] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [TourCompany] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [TourCompany] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [TourCompany] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [TourCompany] SET RECOVERY FULL 
+GO
+ALTER DATABASE [TourCompany] SET  MULTI_USER 
+GO
+ALTER DATABASE [TourCompany] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [TourCompany] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [TourCompany] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [TourCompany] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [TourCompany] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [TourCompany] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'TourCompany', N'ON'
+GO
+ALTER DATABASE [TourCompany] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [TourCompany] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [TourCompany]
+GO
+/****** Object:  Table [dbo].[BÖLGELER]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BÖLGELER](
+	[BölgeAdı] [nvarchar](30) NOT NULL,
+	[BölgeÜcreti] [money] NOT NULL,
+	[ParaBirimi] [char](3) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[BölgeAdı] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DİLLER]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DİLLER](
+	[Dil] [nvarchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Dil] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FATURA]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FATURA](
+	[FaturaNo] [nvarchar](20) NOT NULL,
+	[FaturaTarihi] [datetime] NOT NULL,
+	[MüşteriID] [int] NOT NULL,
+	[FaturaTutarı] [decimal](18, 0) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[FaturaNo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FATURA_BACKUP]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FATURA_BACKUP](
+	[FaturaNo] [int] IDENTITY(1,1) NOT NULL,
+	[FaturaTarihi] [datetime] NOT NULL,
+	[MüşteriID] [int] NOT NULL,
+	[FaturaTutarı] [decimal](18, 0) NOT NULL,
+	[SatısID] [int] NOT NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[KULLANICI]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[KULLANICI](
+	[KullanıcıID] [int] IDENTITY(1,1) NOT NULL,
+	[KullanıcıAdı] [varchar](20) NOT NULL,
+	[Şifre] [varchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[KullanıcıID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[REHBERLER]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[REHBERLER](
+	[RehberAdı] [nvarchar](20) NOT NULL,
+	[RehberSoyadı] [nvarchar](40) NOT NULL,
+	[RehberCinsiyet] [char](1) NOT NULL,
+	[RehberTelefonNumarası] [varchar](20) NOT NULL,
+	[RehberYabancıDil] [nvarchar](50) NOT NULL,
+	[RehberID] [int] NOT NULL,
+ CONSTRAINT [PK_REHBERLER] PRIMARY KEY CLUSTERED 
+(
+	[RehberID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SATIS]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SATIS](
+	[SatışTutarı] [decimal](18, 0) NOT NULL,
+	[SatısTarihi] [datetime] NOT NULL,
+	[SatısID] [int] IDENTITY(1,1) NOT NULL,
+	[TurAdı] [nvarchar](150) NULL,
+	[TuristID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SatısID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TUR BÖLGELERİ]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TUR BÖLGELERİ](
+	[TurAdı] [nvarchar](150) NOT NULL,
+	[BölgeAdı] [nvarchar](30) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TurAdı] ASC,
+	[BölgeAdı] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TURİSTLER]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TURİSTLER](
+	[TuristID] [int] IDENTITY(1,1) NOT NULL,
+	[TuristAdı] [nvarchar](20) NOT NULL,
+	[TuristSoyadı] [nvarchar](40) NOT NULL,
+	[TuristCinsiyet] [char](1) NOT NULL,
+	[TuristDoğumTarihi] [date] NOT NULL,
+	[TuristUyruk] [nvarchar](50) NOT NULL,
+	[TuristGeldiğiÜlke] [nvarchar](50) NOT NULL,
+	[ÜlkeID] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TuristID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TURLAR]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TURLAR](
+	[TurAdı] [nvarchar](150) NOT NULL,
+	[TurTarihi] [datetime] NOT NULL,
+	[RehberID] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TurAdı] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ÜLKELER]    Script Date: 2.08.2023 20:42:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ÜLKELER](
+	[ÜlkeID] [int] IDENTITY(1,1) NOT NULL,
+	[ÜlkeAdı] [nvarchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ÜlkeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[BÖLGELER] ([BölgeAdı], [BölgeÜcreti], [ParaBirimi]) VALUES (N'Ayasofya', 50.0000, N'TL ')
+INSERT [dbo].[BÖLGELER] ([BölgeAdı], [BölgeÜcreti], [ParaBirimi]) VALUES (N'Topkapı', 70.0000, N'TL ')
+GO
+INSERT [dbo].[DİLLER] ([Dil]) VALUES (N'Almanca')
+INSERT [dbo].[DİLLER] ([Dil]) VALUES (N'Arapça')
+INSERT [dbo].[DİLLER] ([Dil]) VALUES (N'Fransızca')
+INSERT [dbo].[DİLLER] ([Dil]) VALUES (N'İngilizce')
+GO
+INSERT [dbo].[FATURA] ([FaturaNo], [FaturaTarihi], [MüşteriID], [FaturaTutarı]) VALUES (N'6', CAST(N'2023-08-01T17:59:42.120' AS DateTime), 11, CAST(140 AS Decimal(18, 0)))
+INSERT [dbo].[FATURA] ([FaturaNo], [FaturaTarihi], [MüşteriID], [FaturaTutarı]) VALUES (N'7', CAST(N'2023-08-01T17:59:42.120' AS DateTime), 12, CAST(200 AS Decimal(18, 0)))
+GO
+SET IDENTITY_INSERT [dbo].[FATURA_BACKUP] ON 
+
+INSERT [dbo].[FATURA_BACKUP] ([FaturaNo], [FaturaTarihi], [MüşteriID], [FaturaTutarı], [SatısID]) VALUES (6, CAST(N'2023-08-01T17:59:42.120' AS DateTime), 11, CAST(140 AS Decimal(18, 0)), 1)
+INSERT [dbo].[FATURA_BACKUP] ([FaturaNo], [FaturaTarihi], [MüşteriID], [FaturaTutarı], [SatısID]) VALUES (7, CAST(N'2023-08-01T17:59:42.120' AS DateTime), 12, CAST(200 AS Decimal(18, 0)), 2)
+SET IDENTITY_INSERT [dbo].[FATURA_BACKUP] OFF
+GO
+SET IDENTITY_INSERT [dbo].[KULLANICI] ON 
+
+INSERT [dbo].[KULLANICI] ([KullanıcıID], [KullanıcıAdı], [Şifre]) VALUES (1, N'Yetkili', N'123456')
+SET IDENTITY_INSERT [dbo].[KULLANICI] OFF
+GO
+INSERT [dbo].[REHBERLER] ([RehberAdı], [RehberSoyadı], [RehberCinsiyet], [RehberTelefonNumarası], [RehberYabancıDil], [RehberID]) VALUES (N'Sarp', N'AKYAZI', N'E', N'5645556942', N'İngilizce', 1)
+INSERT [dbo].[REHBERLER] ([RehberAdı], [RehberSoyadı], [RehberCinsiyet], [RehberTelefonNumarası], [RehberYabancıDil], [RehberID]) VALUES (N'Efe', N'Ece', N'E', N'05526541478', N'İngilizce', 2)
+INSERT [dbo].[REHBERLER] ([RehberAdı], [RehberSoyadı], [RehberCinsiyet], [RehberTelefonNumarası], [RehberYabancıDil], [RehberID]) VALUES (N'Rengin', N'Sarp', N'K', N'05695468822', N'Almanca', 3)
+GO
+SET IDENTITY_INSERT [dbo].[SATIS] ON 
+
+INSERT [dbo].[SATIS] ([SatışTutarı], [SatısTarihi], [SatısID], [TurAdı], [TuristID]) VALUES (CAST(140 AS Decimal(18, 0)), CAST(N'2023-06-01T00:00:00.000' AS DateTime), 1, NULL, NULL)
+INSERT [dbo].[SATIS] ([SatışTutarı], [SatısTarihi], [SatısID], [TurAdı], [TuristID]) VALUES (CAST(200 AS Decimal(18, 0)), CAST(N'2023-08-03T00:00:00.000' AS DateTime), 2, NULL, NULL)
+INSERT [dbo].[SATIS] ([SatışTutarı], [SatısTarihi], [SatısID], [TurAdı], [TuristID]) VALUES (CAST(70 AS Decimal(18, 0)), CAST(N'2023-08-02T17:02:14.263' AS DateTime), 4, N'İstanbul Turu', 11)
+INSERT [dbo].[SATIS] ([SatışTutarı], [SatısTarihi], [SatısID], [TurAdı], [TuristID]) VALUES (CAST(50 AS Decimal(18, 0)), CAST(N'2023-08-02T17:02:14.263' AS DateTime), 5, N'Anadolu Turu', 12)
+SET IDENTITY_INSERT [dbo].[SATIS] OFF
+GO
+INSERT [dbo].[TUR BÖLGELERİ] ([TurAdı], [BölgeAdı]) VALUES (N'Anadolu Turu', N'Ayasofya')
+INSERT [dbo].[TUR BÖLGELERİ] ([TurAdı], [BölgeAdı]) VALUES (N'İstanbul Turu', N'Topkapı')
+GO
+SET IDENTITY_INSERT [dbo].[TURİSTLER] ON 
+
+INSERT [dbo].[TURİSTLER] ([TuristID], [TuristAdı], [TuristSoyadı], [TuristCinsiyet], [TuristDoğumTarihi], [TuristUyruk], [TuristGeldiğiÜlke], [ÜlkeID]) VALUES (11, N'Chuck', N'Bass', N'E', CAST(N'1990-01-01' AS Date), N'ABD', N'ABD', 4)
+INSERT [dbo].[TURİSTLER] ([TuristID], [TuristAdı], [TuristSoyadı], [TuristCinsiyet], [TuristDoğumTarihi], [TuristUyruk], [TuristGeldiğiÜlke], [ÜlkeID]) VALUES (12, N'Jane', N'Slown', N'K', CAST(N'1991-01-03' AS Date), N'ABD', N'ABD', 4)
+SET IDENTITY_INSERT [dbo].[TURİSTLER] OFF
+GO
+INSERT [dbo].[TURLAR] ([TurAdı], [TurTarihi], [RehberID]) VALUES (N'Anadolu Turu', CAST(N'2023-08-03T00:00:00.000' AS DateTime), 2)
+INSERT [dbo].[TURLAR] ([TurAdı], [TurTarihi], [RehberID]) VALUES (N'İstanbul Turu', CAST(N'2023-06-01T00:00:00.000' AS DateTime), 1)
+GO
+SET IDENTITY_INSERT [dbo].[ÜLKELER] ON 
+
+INSERT [dbo].[ÜLKELER] ([ÜlkeID], [ÜlkeAdı]) VALUES (1, N'Türkiye')
+INSERT [dbo].[ÜLKELER] ([ÜlkeID], [ÜlkeAdı]) VALUES (2, N'Almanya')
+INSERT [dbo].[ÜLKELER] ([ÜlkeID], [ÜlkeAdı]) VALUES (3, N'İngiltre')
+INSERT [dbo].[ÜLKELER] ([ÜlkeID], [ÜlkeAdı]) VALUES (4, N'ABD')
+SET IDENTITY_INSERT [dbo].[ÜLKELER] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__KULLANIC__748892B979234863]    Script Date: 2.08.2023 20:42:02 ******/
+ALTER TABLE [dbo].[KULLANICI] ADD UNIQUE NONCLUSTERED 
+(
+	[KullanıcıAdı] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__REHBERLE__68070503AA0B03F3]    Script Date: 2.08.2023 20:42:02 ******/
+ALTER TABLE [dbo].[REHBERLER] ADD UNIQUE NONCLUSTERED 
+(
+	[RehberTelefonNumarası] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[BÖLGELER] ADD  DEFAULT ('TL') FOR [ParaBirimi]
+GO
+ALTER TABLE [dbo].[FATURA]  WITH CHECK ADD FOREIGN KEY([MüşteriID])
+REFERENCES [dbo].[TURİSTLER] ([TuristID])
+GO
+ALTER TABLE [dbo].[SATIS]  WITH CHECK ADD FOREIGN KEY([TurAdı])
+REFERENCES [dbo].[TURLAR] ([TurAdı])
+GO
+ALTER TABLE [dbo].[SATIS]  WITH CHECK ADD FOREIGN KEY([TuristID])
+REFERENCES [dbo].[TURİSTLER] ([TuristID])
+GO
+ALTER TABLE [dbo].[TUR BÖLGELERİ]  WITH CHECK ADD FOREIGN KEY([BölgeAdı])
+REFERENCES [dbo].[BÖLGELER] ([BölgeAdı])
+GO
+ALTER TABLE [dbo].[TUR BÖLGELERİ]  WITH CHECK ADD FOREIGN KEY([TurAdı])
+REFERENCES [dbo].[TURLAR] ([TurAdı])
+GO
+ALTER TABLE [dbo].[TURİSTLER]  WITH CHECK ADD FOREIGN KEY([ÜlkeID])
+REFERENCES [dbo].[ÜLKELER] ([ÜlkeID])
+GO
+ALTER TABLE [dbo].[TURLAR]  WITH CHECK ADD  CONSTRAINT [FK_TURLAR_REHBERLER] FOREIGN KEY([RehberID])
+REFERENCES [dbo].[REHBERLER] ([RehberID])
+GO
+ALTER TABLE [dbo].[TURLAR] CHECK CONSTRAINT [FK_TURLAR_REHBERLER]
+GO
+ALTER TABLE [dbo].[BÖLGELER]  WITH CHECK ADD CHECK  (([BölgeÜcreti]>=(20)))
+GO
+ALTER TABLE [dbo].[REHBERLER]  WITH CHECK ADD  CONSTRAINT [CK_RehberCinsiyet] CHECK  (([RehberCinsiyet]='K' OR [RehberCinsiyet]='E'))
+GO
+ALTER TABLE [dbo].[REHBERLER] CHECK CONSTRAINT [CK_RehberCinsiyet]
+GO
+ALTER TABLE [dbo].[REHBERLER]  WITH CHECK ADD  CONSTRAINT [CK_YabancıDil] CHECK  (([RehberYabancıDil]='Arapça' OR [RehberYabancıDil]='Almanca' OR [RehberYabancıDil]='Fransızca' OR [RehberYabancıDil]='İngilizce'))
+GO
+ALTER TABLE [dbo].[REHBERLER] CHECK CONSTRAINT [CK_YabancıDil]
+GO
+ALTER TABLE [dbo].[TURİSTLER]  WITH CHECK ADD  CONSTRAINT [CK_TuristCinsiyet] CHECK  (([TuristCinsiyet]='K' OR [TuristCinsiyet]='E'))
+GO
+ALTER TABLE [dbo].[TURİSTLER] CHECK CONSTRAINT [CK_TuristCinsiyet]
+GO
+USE [master]
+GO
+ALTER DATABASE [TourCompany] SET  READ_WRITE 
+GO

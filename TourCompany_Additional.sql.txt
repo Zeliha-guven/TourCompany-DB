@@ -1,0 +1,224 @@
+Ana içeriğe atla
+Google Classroom
+create table BÖLGELER (BölgeAdı NVARCHAR(30) NOT NULL PRIMARY KEY,
+BölgeÜcreti MONEY NOT NULL CHECK (BölgeÜcreti >= 20))
+
+CREATE TABLE TURLAR (TurAdı NVARCHAR(150) NOT NULL PRIMARY KEY,
+TurTarihi DATETIME NOT NULL)
+alter table TURLAR
+ADD RehberID INT 
+Alter table TURLAR
+ALTER COLUMN RehberID int not null
+
+
+CREATE TABLE REHBERLER (RehberAdı NVARCHAR(20) NOT NULL, 
+RehberSoyadı NVARCHAR(40) NOT NULL,
+RehberCinsiyet CHAR(1) NOT NULL,
+RehberTelefonNumarası VARCHAR(20) NOT NULL UNIQUE,
+RehberYabancıDil NVARCHAR(50) NOT NULL 
+Alter table REHBERLER
+ADD CONSTRAINT CK_RehberCinsiyet CHECK (RehberCinsiyet IN ('E', 'K'))
+
+CREATE TABLE SATIS (SatısID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+SatışTutarı DECIMAL NOT NULL,
+SatısTarihi DATETIME NOT NULL)
+
+CREATE TABLE TURİSTLER (TuristID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+TuristAdı NVARCHAR(20) NOT NULL,
+TuristSoyadı NVARCHAR(40) NOT NULL,
+TuristCinsiyet CHAR(1) NOT NULL,
+TuristDoğumTarihi DATE NOT NULL,
+TuristUyruk NVARCHAR(50) NOT NULL,)
+ALTER TABLE TURİSTLER
+ADD TuristGeldiğiÜlke NVARCHAR(50) NOT NULL
+
+CREATE TABLE FATURA (FaturaNo INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+FaturaTarihi DATETIME NOT NULL, 
+MüşteriID INT NOT NULL,
+FaturaTutarı DECIMAL NOT NULL, 
+FOREIGN KEY (MüşteriID) REFERENCES TURİSTLER(TuristID))
+ALTER TABLE FATURA
+ADD CONSTRAINT DF_FaturaTarihi DEFAULT GETDATE() FOR FaturaTarihi
+
+create table [TUR BÖLGELERİ] (TurAdı NVARCHAR(150) NOT NULL,
+BölgeAdı NVARCHAR(30) NOT NULL,
+PRIMARY KEY (TurAdı, BölgeAdı),
+FOREIGN KEY (TurAdı) REFERENCES TURLAR(TurAdı),
+FOREIGN KEY (BölgeAdı) REFERENCES BÖLGELER(BölgeAdı)
+
+ALTER Table TURLAR
+ADD FOREIGN KEY (RehberID) REFERENCES REHBERLER(RehberID)
+
+-- SATIŞ VE TURLAR
+Alter Table Satıs 
+add TurAdı nvarchar(150)
+
+alter table Satıs
+Add FOREIGN KEY (TurAdı) REFERENCES Turlar(TurAdı)
+
+-- SATIŞ VE TURİSTLER
+
+Alter table Satıs
+ADD TuristID INT 
+Alter table Satıs
+ADD FOREIGN KEY (TuristID) REFERENCES TURİSTLER(TuristID)
+
+alter table rehberler
+add CONSTRAINT UQ_RehberAdıSoyadı UNIQUE (RehberAdı, RehberSoyadı)
+
+ALTER TABLE FATURA
+ADD SatısID INT NOT NULL FOREIGN KEY REFERENCES SATIS(SatısID)
+
+create table ÜLKELER (ÜlkeID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+ÜlkeAdı NVARCHAR(50) NOT NULL)
+
+ALTER TABLE TURİSTLER
+ADD ÜlkeID INT NOT NULL FOREIGN KEY REFERENCES ÜLKELER(ÜlkeID)
+
+CREATE TABLE DİLLER (Dil NVARCHAR(20) NOT NULL PRIMARY KEY);
+INSERT INTO DİLLER (Dil)
+VALUES ('İngilizce'),
+('Fransızca'),
+('Almanca'),
+('Arapça')
+
+ALTER TABLE REHBERLER
+ADD CONSTRAINT CK_YabancıDil CHECK (RehberYabancıDil IN ('İngilizce', 'Fransızca', 'Almanca', 'Arapça'))
+
+ALTER TABLE TURİSTLER ADD CONSTRAINT CK_TuristCinsiyet CHECK (TuristCinsiyet IN ('E', 'K'))
+
+
+
+---örnek veriler
+
+insert into BÖLGELER (BölgeAdı, BölgeÜcreti)
+VALUES ('Topkapı', 70),
+('Ayasofya', 50)
+
+insert into REHBERLER (RehberID, RehberAdı, RehberSoyadı, RehberCinsiyet, RehberTelefonNumarası, RehberYabancıDil)
+VALUES (2, 'Efe', 'Ece', 'E', '05526541478', 'İngilizce'),
+(3, 'Rengin', 'Sarp', 'K', '05695468822', 'Almanca')
+select * from REHBERLER
+
+insert into TURLAR (TurAdı, TurTarihi, RehberID)
+VALUES ('İstanbul Turu', '2023-06-01',1),
+('Anadolu Turu', '2023-08-03',2)
+
+insert into SATIS (SatışTutarı, SatısTarihi)
+VALUES (140, '2023-06-01'),
+(200, '2023-08-03')
+
+INSERT INTO ÜLKELER (ÜlkeAdı)
+Values ('Türkiye'),
+('Almanya'),
+('İngiltre'),
+('ABD')
+
+insert into TURİSTLER (TuristAdı, TuristSoyadı, TuristCinsiyet, TuristDoğumTarihi, TuristUyruk, TuristGeldiğiÜlke)
+Values ('Chuck', 'Bass', 'E', '1990-01-01', 'ABD', 'ABD', 4),
+('Jane', 'Slown', 'K', '1991-01-03', 'ABD', 'ABD', 4)
+
+
+insert into TURİSTLER (TuristAdı, TuristSoyadı, TuristCinsiyet, TuristDoğumTarihi, TuristUyruk, TuristGeldiğiÜlke, ÜlkeID)
+Values ('Chuck', 'Bass', 'E', '1990-01-01', 'ABD', 'ABD', 4),
+('Jane', 'Slown', 'K', '1991-01-03', 'ABD', 'ABD', 4)
+
+INSERT INTO FATURA (FaturaTarihi, MüşteriID, FaturaTutarı, SatısID)
+VALUES (GETDATE(), 11, 140, 1),
+(GETDATE(), 12, 200, 2)
+
+INSERT INTO [TUR BÖLGELERİ] (TurAdı, BölgeAdı)
+VALUES ('İstanbul Turu', 'Topkapı'),
+('Anadolu Turu', 'Ayasofya')
+
+
+--fatura tutarını hesaplamak için 
+
+-select F.FaturaNo, 
+F.FaturaTarihi, T.turistAdı, T.TuristSoyadı,
+SUM(s.SatışTutarı * case when DATEDIFF(YEAR,T.TuristDoğumTarihi, GETDATE()) >= 60 THEN 0.85
+ELSE 1 END ) AS FaturaTutarı from FATURA F 
+join TURİSTLER T ON F.MüşteriID = T.TuristID
+join SATIS S ON F.SatısID = S.SatısID
+Group by F.FaturaNo, F.FaturaTarihi, T.TuristAdı, T.TuristSoyadı
+
+
+--kullanıcı
+
+CREATE TABLE KULLANICI (KullanıcıID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+KullanıcıAdı varchar(20) not null unique,
+Şifre varchar(20) not null)
+
+insert into KULLANICI(KullanıcıAdı, Şifre)
+VALUES ('Yetkili', '123456')
+
+--SATIŞ KAYDI
+
+INSERT INTO SATIS (SatışTutarı, SatısTarihi, TurAdı, TuristID)
+SELECT SUM(B.BölgeÜcreti), GETDATE(), 'İstanbul Turu', 11
+FROM [TUR BÖLGELERİ] TB
+JOIN BÖLGELER B ON TB.BölgeAdı = B.BölgeAdı
+WHERE TB.TurAdı = 'İstanbul Turu'
+UNION ALL
+SELECT SUM(B.BölgeÜcreti), GETDATE(), 'Anadolu Turu', 12
+FROM [TUR BÖLGELERİ] TB
+JOIN BÖLGELER B ON TB.BölgeAdı = B.BölgeAdı
+WHERE TB.TurAdı = 'Anadolu Turu'
+
+-- FATURA OLUŞTURMA,
+
+INSERT INTO FATURA (MüşteriID, FaturaTutarı, SatısID)
+SELECT S.TuristID, S.SatışTutarı * CASE WHEN DATEDIFF(YEAR, T.TuristDoğumTarihi, GETDATE()) >= 60 THEN 0.85 ELSE 1 END, S.SatısID
+FROM SATIS S
+JOIN TURİSTLER T ON S.TuristID = T.TuristID
+WHERE S.TuristID = 1
+
+--FATURA TURİST 
+
+SELECT F.FaturaNo, F.FaturaTarihi, T.TuristAdı AS MüşteriAdı, T.TuristSoyadı AS MüşteriSoyadı, F.FaturaTutarı
+FROM FATURA F
+JOIN TURİSTLER T ON F.MüşteriID = T.TuristID
+
+
+--2 FATURAYI ARAMAK İÇİN
+
+SELECT F.FaturaNo, F.FaturaTarihi, T.TuristAdı AS MüşteriAdı, T.TuristSoyadı AS MüşteriSoyadı, F.FaturaTutarı
+FROM FATURA F
+JOIN TURİSTLER T ON F.MüşteriID = T.TuristID
+WHERE F.FaturaNo = 'FTR20230202001'
+
+
+
+-- FATURAYI KOLONUNU DEĞİŞTİR
+
+SELECT * INTO FATURA_BACKUP FROM FATURA
+
+
+ALTER TABLE FATURA DROP CONSTRAINT PK__FATURA__8431C5C36E14D544
+ALTER TABLE FATURA DROP COLUMN FaturaNo
+
+CREATE TABLE FATURA (FaturaNo NVARCHAR(20) NOT NULL PRIMARY KEY,
+ FaturaTarihi DATETIME NOT NULL, MüşteriID INT NOT NULL,
+ FaturaTutarı DECIMAL NOT NULL, FOREIGN KEY (MüşteriID) REFERENCES TURISTLER(TuristID))
+
+
+
+ SELECT * INTO FATURA FROM FATURA_BACKUP ALTER TABLE FATURA
+ALTER COLUMN FaturaNo NVARCHAR(20) NOT NULL
+
+
+DROP TABLE FATURA
+
+CREATE TABLE FATURA (FaturaNo NVARCHAR(20) NOT NULL PRIMARY KEY, FaturaTarihi DATETIME NOT NULL,
+MüşteriID INT NOT NULL, FaturaTutarı DECIMAL NOT NULL,
+FOREIGN KEY (MüşteriID) REFERENCES TURİSTLER(TuristID))
+
+INSERT INTO FATURA (FaturaNo, FaturaTarihi, MüşteriID, FaturaTutarı)
+SELECT FaturaNo, FaturaTarihi, MüşteriID, FaturaTutarı FROM FATURA_BACKUP
+
+DECLARE @FaturaNo NVARCHAR(20) = 'FTR20230202001'
+DECLARE @FaturaNo NVARCHAR(20) = 'FTR20230202002'
+
+SELECT FaturaNo, FaturaTarihi, MüşteriID, FaturaTutarı
+FROM FATURA
+WHERE FaturaNo = 'FTR20230202001'
