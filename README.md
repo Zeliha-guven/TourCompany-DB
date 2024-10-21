@@ -19,6 +19,9 @@ This project involves developing an application for the Tour Company, which prov
 - SQL for database management
 - MySQL for database implementation
 
+- ## Contact
+For questions or suggestions, contact me at [zelihguven@gmail.com](mailto:zelihguven@gmail.com)
+
 ## How to Use
 1. Clone the repository.
 2. Import the `TourCompany_Additional.sql` and `TourCompany_Additional.script` scripts into your MySQL server.
